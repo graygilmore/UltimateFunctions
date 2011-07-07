@@ -240,4 +240,7 @@ if ( !is_admin() ){
     add_filter('widget_text', 'do_shortcode', 11);
 }
 
+// custom editor styles -- create editor-style.css in your theme directory
+add_editor_style();
+
 ?>
