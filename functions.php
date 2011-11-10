@@ -3,8 +3,8 @@
 /*
 
 	WordPress Functions Template
-	Version 1.0
-	Last Updated June 29, 2011
+	Version 1.01
+	Last Updated November 9, 2011
 	Author: Gray Gilmore - designbygray.ca
 
 	Many of the functions below were provided from the wonderful duo of Chris Coyier and Jeff Starr over at Digging Into WordPress digwp.com
@@ -239,13 +239,22 @@ function get_first_category_ID() {
 }
 
 
-// allows us to use is_tree to find both parent and child of parent
-function is_tree($pid) {      // $pid = The ID of the page we're looking for pages underneath
-	global $post;         // load details about this page
-	if(is_page()&&($post->post_parent==$pid||is_page($pid)))
-               return true;   // we're at the page or at a sub page
+// allows us to target pages in a specific branch
+function is_tree($pid) {
+	global $post;
+
+	$ancestors = get_post_ancestors($post->$pid);
+	$root = count($ancestors) - 1;
+	$parent = $ancestors[$root];
+
+	if(is_page() && (is_page($pid) || $post->post_parent == $pid || in_array($pid, $ancestors)))
+	{
+		return true;
+	}
 	else
-               return false;  // we're elsewhere
+	{
+		return false;
+	}
 };
 
 
